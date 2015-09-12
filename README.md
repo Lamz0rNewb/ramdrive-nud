@@ -11,7 +11,7 @@ Then you might continue :)
 
 - **First you need to create a directory for the ramdrive at "/ramdrive":**
 
-$sudo mkdir /ramdrive
+`sudo mkdir /ramdrive`
 
 - **Now you make a ramdrive of that folder, by editing /etc/fstab.**
 
