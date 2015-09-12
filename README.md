@@ -10,9 +10,9 @@
 **Run at own risk!**
 
 
-- **First you need to create a directory for the ramdrive at "/ramdrive":**
+- **First you need to create a directory for the ramdrive at "/ramdisk":**
 
-`sudo mkdir /ramdrive`
+`sudo mkdir /ramdisk`
 
 
 - **Now you make a ramdrive of that folder, by editing /etc/fstab.** Open /etc/fstab and append the "tmpfs... " line:
@@ -21,19 +21,23 @@
 
 `tmpfs /ramdisk tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=16M 0 0`
 
+The entry in /etc/fstab requires a system restart to become active. If you don't want to restart now, you can mount the ramdisk manually:
+
+`sudo mount -t tmpfs -o size=16M tmpfs /ramdisk/`
+
 
 - **Then you need to move your wallet files (you have backup?):**
 
-`mv ~/.nu/walletB.dat ~/.nu/walletB.dat.ramdrive`
+`mv ~/.nu/walletB.dat ~/.nu/walletB.dat.ramdisk`
 
-`mv ~/.nu/walletS.dat ~/.nu/walletS.dat.ramdrive`
+`mv ~/.nu/walletS.dat ~/.nu/walletS.dat.ramdisk`
 
 
 - **Optionally you can enter two lines to your crontab, which make a backup of you wallet files each 4 hours:**
 
 `crontab -e`
 
-`00 0,4,8,12,16,20 * * * [path-to-ramdrive-nud]/backup-wallet-nsr-tmpfs`
+`00 0,4,8,12,16,20 * * * [path-to-"ramdrive-nud"]/backup-wallet-nsr-tmpfs`
 
-`00 0,4,8,12,16,18 * * * [path-to-ramdrive-nud]/backup-wallet-nbt-tmpfs`
+`00 0,4,8,12,16,18 * * * [path-to-"ramdrive-nud"]/backup-wallet-nbt-tmpfs`
 
