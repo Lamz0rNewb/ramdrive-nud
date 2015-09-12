@@ -1,0 +1,10 @@
+#!/bin/bash
+cwd=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+PATH=$cwd:$PATH
+
+if [ -f ~/.nu/walletS.dat.ramdisk.bak ]; then
+        mv ~/.nu/walletS.dat.ramdisk.bak ~/.nu/walletS.dat.ramdisk.bak2
+        nud backupwallet ~/.nu/walletS.dat.ramdisk.bak
+else
+	nud backupwallet ~/.nu/walletS.dat.ramdisk.bak
+fi

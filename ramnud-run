@@ -1,0 +1,72 @@
+#!/bin/bash
+#
+# This script only works if you have renamed (moved)
+# your wallet files from
+#       ~/.nu/walletS.dat -> ~/.nu/walletS.dat.ramdisk
+#       ~/.nu/walletB.dat -> ~/.nu/walletB.dat.ramdisk
+#
+# It has some safety measures, but handle it with care
+# Be sure to have backups of your wallet files before you continue!
+#
+
+# check that nud isn't running
+# should save from making a mess with the wallet files
+if [ -f ~/.nu/nu.pid ]; then
+        nu_pid=$(cat ~/.nu/nu.pid)
+                if [ -d /proc/$nu_pid ]; then
+                echo "nud is running. Exiting script"
+                exit 1
+                fi
+fi
+
+# last time to stop script
+read -p "Rename your REAL wallet[B|S].dat wallet[B|S].dat.ramdisk BEFORE continuing. Press [Enter] to continue or CTRL+C to abort"
+
+# check for wallet symlink
+if  [ -h ~/.nu/walletB.dat ]; then
+        rm ~/.nu/walletB.dat
+else
+        if  [ -f ~/.nu/walletB.dat ]; then
+                echo "ERROR: ~/.nu/walletB.dat exists; please rename to walletB.dat.ramdisk"
+                exit 1
+        fi
+fi
+
+# check for wallet symlink
+if  [ -h ~/.nu/walletS.dat ]; then
+        rm ~/.nu/walletS.dat
+else
+        if  [ -f ~/.nu/walletS.dat ]; then
+                echo "ERROR: ~/.nu/walletS.dat exists; please rename to walletS.dat.ramdisk"
+                exit 1
+        fi
+fi
+
+# make the bakup wallet files the ones with that nud sill start
+if [ -f ~/.nu/walletB.dat.ramdisk.bak ]; then
+        mv ~/.nu/walletB.dat.ramdisk.bak  ~/.nu/walletB.dat.ramdisk
+fi
+
+if [ -f ~/.nu/walletS.dat.ramdisk.bak ]; then
+        mv ~/.nu/walletS.dat.ramdisk.bak ~/.nu/walletS.dat.ramdisk
+fi
+
+# copy wallet files to ramdisk
+cp ~/.nu/walletB.dat.ramdisk /ramdisk/walletB.dat
+cp ~/.nu/walletS.dat.ramdisk /ramdisk/walletS.dat
+
+
+# start nud after having checked for the wallet files on ramdisk
+# and having symlinked the ramdisk wallet files
+if [ -f /ramdisk/walletB.dat ]; then
+        ln -s /ramdisk/walletB.dat ~/.nu/walletB.dat
+        if [ -f /ramdisk/walletS.dat ]; then
+                echo "Starting nud with wallets on ramdisk"
+                ln -s /ramdisk/walletS.dat ~/.nu/walletS.dat
+                ~/bin/nud
+        else
+                echo "/ramdisk/walletS.dat doesn't exist"
+        fi
+else
+        echo "/ramdisk/walletS.dat doesn't exist"
+fi

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ -f ~/.nu/walletB.dat.ramdisk.bak ]; then
+        mv ~/.nu/walletB.dat.ramdisk.bak ~/.nu/walletB.dat.ramdisk.bak2
+fi
+
+if [ -f ~/.nu/walletS.dat.ramdisk.bak ]; then
+        mv ~/.nu/walletS.dat.ramdisk.bak ~/.nu/walletS.dat.ramdisk.bak2
+fi
+
+echo "writing ~/.nu/walletB.dat.ramdisk"
+nud -unit=B backupwallet ~/.nu/walletB.dat.ramdisk.bak
+
+echo "writing ~/.nu/walletS.dat.ramdisk"
+nud backupwallet ~/.nu/walletS.dat.ramdisk.bak
+
+sleep 1
+nud stop
