@@ -1,4 +1,13 @@
 #!/bin/bash
+#
+# This script is intended to stop nud and write
+# the wallet files from ramdrive back to the application folder
+#
+# It has some safety measures, but handle it with care
+# Be sure to have backups of your wallet files before you continue!
+#
+#
+
 application_dir="/home/pi/.nu/"
 application_name="nud"
 

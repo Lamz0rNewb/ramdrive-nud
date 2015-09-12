@@ -6,10 +6,11 @@
 #       ~/.nu/walletB.dat -> ~/.nu/walletB.dat.ramdisk
 #
 # It has some safety measures, but handle it with care
-# Be sure to have backups of your wallt files before you continue!
+# Be sure to have backups of your wallet files before you continue!
+#
 #
 
-# If all goes well you only need to change the settings in the followig lines
+# If all goes well you only need to change the settings in the following few lines
 application_dir="/home/pi/.nu/"
 application_pid="nu.pid"
 application_name="nud"
@@ -18,7 +19,8 @@ wallet01_unit="B"
 wallet02_unit="S"
 
 
-# This should work automatically - 
+# From here everything should work automatically - at least if 2 wallet files are available
+# As this is a preparation for bcexchanged on ramdisk the single wallet version will follow later
 wallet01_orig="wallet$wallet01_unit.dat"
 wallet01_ramdisk="wallet$wallet01_unit.dat.ramdisk"
 wallet01_ramdisk_bak="wallet$wallet01_unit.dat.ramdisk.bak"
@@ -48,7 +50,6 @@ else
                 echo "ERROR: $application_dir$wallet01 exists; please rename to $wallet01_ramdisk"
                 exit 1
         fi
-echo "whuaaaat?"
 fi
 
 # check for wallet symlink
