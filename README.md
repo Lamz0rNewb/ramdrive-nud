@@ -46,6 +46,6 @@ The entry in /etc/fstab requires a system restart to become active. If you don't
 
 # Run nud with wallets on ramdrive
 
-You can start nud with wallets on ramdrive with `ramnud-run` and stop it with `ramnud-stop`. `nud stop` RPC still works, but the ramnud-stop script makes writes a backup of the wallet files to ~/.nu/ and is the preferred way to work with this ramdrive edition.
+You can start nud with wallets on ramdrive with `ramnud-run` and stop it with `ramnud-stop`. `nud stop` RPC still works, but the ramnud-stop script writes a backup of the wallet files to ~/.nu/ and is the preferred way to work with this ramdrive edition.
 
 **Regarding the backup-wallet-nbt-tmpfs/backup-wallet-nsr-tmpfs scripts**: Make sure to have `nud` on a location like "/bin/", because crontab has only limited knowledge of environmental variables. The backup might not work if crontab ca't execute nud.
