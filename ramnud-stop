@@ -1,18 +1,32 @@
 #!/bin/bash
+application_dir="/home/pi/.nu/"
+application_name="nud"
 
-if [ -f ~/.nu/walletB.dat.ramdisk.bak ]; then
-        mv ~/.nu/walletB.dat.ramdisk.bak ~/.nu/walletB.dat.ramdisk.bak2
+wallet01_unit="B"
+wallet01_ramdisk="walletB.dat.ramdisk"
+wallet01_ramdisk_bak="walletB.dat.ramdisk.bak"
+wallet01_ramdisk_bak2="walletB.dat.ramdisk.bak2"
+
+wallet02_unit="S"
+wallet02_ramdisk="walletS.dat.ramdisk"
+wallet02_ramdisk_bak="walletS.dat.ramdisk.bak"
+wallet02_ramdisk_bak2="walletS.dat.ramdisk.bak2"
+
+if [ -f $application_dir$wallet01_ramdisk_bak ]; then
+        mv $application_dir$wallet01_ramdisk_bak $application_dir$wallet01_ramdisk_bak2
 fi
 
-if [ -f ~/.nu/walletS.dat.ramdisk.bak ]; then
-        mv ~/.nu/walletS.dat.ramdisk.bak ~/.nu/walletS.dat.ramdisk.bak2
+if [ -f $application_dir$wallet02_ramdisk_bak ]; then
+        mv $application_dir$wallet02_ramdisk_bak $application_dir$wallet02_ramdisk_bak2
 fi
 
-echo "writing ~/.nu/walletB.dat.ramdisk"
-nud -unit=B backupwallet ~/.nu/walletB.dat.ramdisk.bak
+echo "writing $application_dir$wallet01_ramdisk"
+echo $application_name -unit=$wallet01_unit backupwallet $application_dir$wallet01_ramdisk_bak
+$application_name -unit=$wallet01_unit backupwallet $application_dir$wallet01_ramdisk_bak
 
-echo "writing ~/.nu/walletS.dat.ramdisk"
-nud backupwallet ~/.nu/walletS.dat.ramdisk.bak
+echo "writing $application_dir$wallet02_ramdisk"
+echo $application_name -unit=$wallet02_unit backupwallet $application_dir$wallet02_ramdisk_bak
+$application_name -unit=$wallet02_unit backupwallet $application_dir$wallet02_ramdisk_bak
 
 sleep 1
-nud stop
+$application_name stop

@@ -6,67 +6,82 @@
 #       ~/.nu/walletB.dat -> ~/.nu/walletB.dat.ramdisk
 #
 # It has some safety measures, but handle it with care
-# Be sure to have backups of your wallet files before you continue!
+# Be sure to have backups of your wallt files before you continue!
 #
 
-# check that nud isn't running
-# should save from making a mess with the wallet files
-if [ -f ~/.nu/nu.pid ]; then
-        nu_pid=$(cat ~/.nu/nu.pid)
+# If all goes well you only need to change the settings in the followig lines
+application_dir="/home/pi/.nu/"
+application_pid="nu.pid"
+application_name="nud"
+ramdisk="/ramdisk/"
+wallet01_unit="B"
+wallet02_unit="S"
+
+
+# This should work automatically - 
+wallet01_orig="wallet$wallet01_unit.dat"
+wallet01_ramdisk="wallet$wallet01_unit.dat.ramdisk"
+wallet01_ramdisk_bak="wallet$wallet01_unit.dat.ramdisk.bak"
+
+wallet02_orig="wallet$wallet02_unit.dat"
+wallet02_ramdisk="wallet$wallet02_unit.dat.ramdisk"
+wallet02_ramdisk_bak="wallet$wallet02_unit.dat.ramdisk.bak"
+
+
+# check for $application_name
+if [ -f $application_dir$application_pid ]; then
+        nu_pid=$(cat $application_dir$application_pid)
                 if [ -d /proc/$nu_pid ]; then
-                echo "nud is running. Exiting script"
+                echo "$application_name is running. Exiting script"
                 exit 1
                 fi
 fi
 
 # last time to stop script
-read -p "Rename your REAL wallet[B|S].dat wallet[B|S].dat.ramdisk BEFORE continuing. Press [Enter] to continue or CTRL+C to abort"
+read -p "Change the manes of your wallets from $wallet01_orig/$wallet02_orig to $wallet01_ramdisk/$wallet02_ramdisk BEFORE continuing. Press [Enter] to continue or CTRL+C to abort"
 
 # check for wallet symlink
-if  [ -h ~/.nu/walletB.dat ]; then
-        rm ~/.nu/walletB.dat
+if  [ -h $application_dir$wallet01_orig ]; then
+        rm $application_dir$wallet01_orig
 else
-        if  [ -f ~/.nu/walletB.dat ]; then
-                echo "ERROR: ~/.nu/walletB.dat exists; please rename to walletB.dat.ramdisk"
+	if  [ -f $application_dir$wallet01_orig ]; then
+                echo "ERROR: $application_dir$wallet01 exists; please rename to $wallet01_ramdisk"
+                exit 1
+        fi
+echo "whuaaaat?"
+fi
+
+# check for wallet symlink
+if  [ -h $application_dir$wallet02_orig ]; then
+        rm $application_dir$wallet02_orig
+else
+        if  [ -f $application_dir$wallet02_orig ]; then
+                echo "ERROR: $application_dir$wallet02 exists; please rename to $wallet02_ramdisk"
                 exit 1
         fi
 fi
 
-# check for wallet symlink
-if  [ -h ~/.nu/walletS.dat ]; then
-        rm ~/.nu/walletS.dat
-else
-        if  [ -f ~/.nu/walletS.dat ]; then
-                echo "ERROR: ~/.nu/walletS.dat exists; please rename to walletS.dat.ramdisk"
-                exit 1
-        fi
+if [ -f $application_dir$wallet01_ramdisk_bak ]; then
+        mv $application_dir$wallet01_ramdisk_bak  $application_dir$wallet01_ramdisk
 fi
 
-# make the bakup wallet files the ones with that nud sill start
-if [ -f ~/.nu/walletB.dat.ramdisk.bak ]; then
-        mv ~/.nu/walletB.dat.ramdisk.bak  ~/.nu/walletB.dat.ramdisk
+if [ -f $application_dir$wallet02_ramdisk_bak ]; then
+        mv $application_dir$wallet02_ramdisk_bak $application_dir$wallet02_ramdisk
 fi
 
-if [ -f ~/.nu/walletS.dat.ramdisk.bak ]; then
-        mv ~/.nu/walletS.dat.ramdisk.bak ~/.nu/walletS.dat.ramdisk
-fi
+cp $application_dir$wallet01_ramdisk $ramdisk$wallet01_orig
+cp $application_dir$wallet02_ramdisk $ramdisk$wallet02_orig
 
-# copy wallet files to ramdisk
-cp ~/.nu/walletB.dat.ramdisk /ramdisk/walletB.dat
-cp ~/.nu/walletS.dat.ramdisk /ramdisk/walletS.dat
-
-
-# start nud after having checked for the wallet files on ramdisk
-# and having symlinked the ramdisk wallet files
-if [ -f /ramdisk/walletB.dat ]; then
-        ln -s /ramdisk/walletB.dat ~/.nu/walletB.dat
-        if [ -f /ramdisk/walletS.dat ]; then
-                echo "Starting nud with wallets on ramdisk"
-                ln -s /ramdisk/walletS.dat ~/.nu/walletS.dat
-                ~/bin/nud
+if [ -f $ramdisk$wallet01_orig ]; then
+        ln -s $ramdisk$wallet01_orig $application_dir$wallet01_orig
+        if [ -f $ramdisk$wallet02_orig ]; then
+                echo "starting $application_name with wallets on $ramdisk"
+                ln -s  $ramdisk$wallet02_orig $application_dir$wallet02_orig
+                $application_name
         else
-                echo "/ramdisk/walletS.dat doesn't exist"
+                echo "$ramdisk$wallet02_orig doesn't exist"
         fi
 else
-        echo "/ramdisk/walletS.dat doesn't exist"
+        echo "$ramdisk$wallet02_orig doesn't exist"
 fi
+
