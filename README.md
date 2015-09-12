@@ -7,14 +7,15 @@
 
 **Then you might continue :)**
 
+**Run at own risk!**
+
 
 - **First you need to create a directory for the ramdrive at "/ramdrive":**
 
 `sudo mkdir /ramdrive`
 
-- **Now you make a ramdrive of that folder, by editing /etc/fstab.**
 
-Open /etc/fstab and append the "tmpfs... " line:
+- **Now you make a ramdrive of that folder, by editing /etc/fstab.** Open /etc/fstab and append the "tmpfs... " line:
 
 `sudo nano /etc/fstab`
 
