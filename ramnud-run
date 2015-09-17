@@ -32,8 +32,8 @@ wallet02_ramdisk_bak="wallet$wallet02_unit.dat.ramdisk.bak"
 
 # check for $application_name
 if [ -f $application_dir$application_pid ]; then
-        nu_pid=$(cat $application_dir$application_pid)
-                if [ -d /proc/$nu_pid ]; then
+        pid=$(cat $application_dir$application_pid)
+                if [ -d /proc/$pid ]; then
                 echo "$application_name is running. Exiting script"
                 exit 1
                 fi
