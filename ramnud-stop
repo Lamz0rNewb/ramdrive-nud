@@ -10,16 +10,16 @@
 
 application_dir="/home/pi/.nu/"
 application_name="nud"
-
 wallet01_unit="B"
-wallet01_ramdisk="walletB.dat.ramdisk"
-wallet01_ramdisk_bak="walletB.dat.ramdisk.bak"
-wallet01_ramdisk_bak2="walletB.dat.ramdisk.bak2"
-
 wallet02_unit="S"
-wallet02_ramdisk="walletS.dat.ramdisk"
-wallet02_ramdisk_bak="walletS.dat.ramdisk.bak"
-wallet02_ramdisk_bak2="walletS.dat.ramdisk.bak2"
+
+wallet01_ramdisk="wallet$wallet01_unit.dat.ramdisk"
+wallet01_ramdisk_bak="wallet$wallet01_unit.dat.ramdisk.bak"
+wallet01_ramdisk_bak2="wallet$wallet01_unit.dat.ramdisk.bak2"
+
+wallet02_ramdisk="wallet$wallet02_unit.dat.ramdisk"
+wallet02_ramdisk_bak="wallet$wallet02_unit.dat.ramdisk.bak"
+wallet02_ramdisk_bak2="wallet$wallet02_unit.dat.ramdisk.bak2"
 
 if [ -f $application_dir$wallet01_ramdisk_bak ]; then
         mv $application_dir$wallet01_ramdisk_bak $application_dir$wallet01_ramdisk_bak2

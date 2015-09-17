@@ -1,0 +1,30 @@
+#!/bin/bash
+cwd=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+PATH=$cwd:$PATH
+
+application_dir="/home/pi/.nu/"
+application_pid="nu.pid"
+application_name="nud"
+wallet01_unit="B"
+wallet02_unit="S"
+
+wallet01_bak="$application_dir/wallet$wallet01_unit.dat.ramdisk.bak"
+wallet01_bak2="$application_dir/wallet$wallet01_unit.dat.ramdisk.bak2"
+wallet02_bak="$application_dir/wallet$wallet02_unit.dat.ramdisk.bak"
+wallet02_bak2="$application_dir/wallet$wallet02_unit.dat.ramdisk.bak2"
+
+if [ -f $wallet01_bak ]; then
+        mv $wallet01_bak $wallet01_bak2
+        $application_name -unit=$wallet01_unit backupwallet $wallet01_bak
+else
+        $application_name -unit=$wallet01_unit backupwallet $wallet01_bak
+
+fi
+
+if [ -f $wallet02_bak ]; then
+        mv $wallet02_bak $wallet02_bak2
+        $application_name -unit=$wallet02_unit backupwallet $wallet02_bak
+else
+        $application_name -unit=$wallet02_unit backupwallet $wallet02_bak
+
+fi
