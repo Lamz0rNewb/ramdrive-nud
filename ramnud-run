@@ -63,7 +63,7 @@ if [ -f /ramdisk/walletB.dat ]; then
         if [ -f /ramdisk/walletS.dat ]; then
                 echo "Starting nud with wallets on ramdisk"
                 ln -s /ramdisk/walletS.dat ~/.nu/walletS.dat
-                ~/bin/nud
+                nud
         else
                 echo "/ramdisk/walletS.dat doesn't exist"
         fi
